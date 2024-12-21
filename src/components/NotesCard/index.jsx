@@ -52,7 +52,7 @@ export const NotesCard = ({note}) =>{
             payload:{id}
         })
         isNotesInBin && notesDispatch({
-            type:' ',
+            type:'DELETE_NOTE_FROM_BIN',
             payload:{id}
         })
       
