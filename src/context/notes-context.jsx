@@ -1,22 +1,37 @@
-import { createContext, useContext,useReducer } from "react";
+import { createContext, useContext,useReducer,useEffect } from "react";
 import { notesReducer } from "../reducers/notesReducer";
 import {findNoteInCollection} from "../utils/findNoteInCollection"
 
 const NotesContext = createContext();
 const NotesProvider = ({children})=>{
-    const initialState={
-        title:'',
-        text:'',
-        notes:[],
-        archive:[],
-        important:[],
-        bin:[]
-        // pinnedNotes:[],
-        // unpinnedNotes:[]
-    }
+      const initialState = JSON.parse(localStorage.getItem("notesState")) || {
+        title: "",
+        text: "",
+        notes: [],
+        archive: [],
+        important: [],
+        bin: []
+      };
+
       const[{title,text,notes,archive,important,bin},notesDispatch] = useReducer(notesReducer,initialState)   
      
-      
+      // Save to localStorage whenever state changes
+      useEffect(() => {
+        localStorage.setItem("notesState", JSON.stringify({ title, text, notes, archive, important, bin }));
+      }, [title, text, notes, archive, important, bin]);
+       // Cleanup bin on app load
+      useEffect(() => {
+        notesDispatch({ type: "CLEANUP_BIN" });
+      }, []);
+
+      // Periodic cleanup every 24 hours
+      useEffect(() => {
+          const interval = setInterval(() => {
+              notesDispatch({ type: "CLEANUP_BIN" });
+          }, 24 * 60 * 60 * 1000); // Every 24 hours
+
+          return () => clearInterval(interval);
+        }, []);
 
       const onTitleChange = (e) =>{
         notesDispatch({

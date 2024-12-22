@@ -63,20 +63,21 @@ export const notesReducer = (state,action)=>{
             return{
                 ...state,
                 notes:state.notes.filter(note=>note.id !== action.payload.id),
-                bin:[...state.bin,state.notes.find((note)=>note.id === action.payload.id)],
+                bin:[...state.bin,{...state.notes.find((note)=>note.id === action.payload.id),
+                    createdAt: new Date().toISOString()}],
                
             }
         case 'DELETE_ARCHIVE_NOTE':
                 return{
                     ...state,
                     archive:state.archive.filter(arch=>arch.id !== action.payload.id),
-                    bin:[...state.bin,state.archive.find((note)=>note.id === action.payload.id)],
+                    bin:[...state.bin,{...state.archive.find((note)=>note.id === action.payload.id),createdAt: new Date().toISOString()}],
                 }
         case 'DELETE_IMPORTANT_NOTE':
             return{
                 ...state,
                 important:state.important.filter(imp=>imp.id !== action.payload.id),
-                bin:[...state.bin,state.important.find((note)=>note.id === action.payload.id)],
+                bin:[...state.bin,{...state.important.find((note)=>note.id === action.payload.id),createdAt: new Date().toISOString()}],
             }
         case 'DELETE_NOTE_FROM_BIN':
             return{
@@ -87,16 +88,23 @@ export const notesReducer = (state,action)=>{
         case 'DELETE_UNDO_NOTE':
             return{
                 ...state,
-                notes:[...state.notes,state.notes.find((note)=>note.id === action.payload.id)],
+                notes:[...state.notes,{...state.notes.find((note)=>note.id === action.payload.id),createdAt: new Date().toISOString()}],
                 notes:state.notes.filter(note=>note.id !== action.payload.id)
             }
         case 'REMOVE_FROM_BIN':
-                return{
-                    ...state,
-                    bin:state.bin.filter(arch=>arch.id !== action.payload.id),
-                    notes:[...state.notes,state.bin.find((note)=>note.id === action.payload.id)]
-                    
-                }
+            return{
+                ...state,
+                bin:state.bin.filter(arch=>arch.id !== action.payload.id),
+                notes: [...state.notes, state.bin.find((note) => note.id === action.payload.id)]
+                
+            }
+        case 'CLEANUP_BIN':
+            const sevenDaysAgo = new Date();
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+            return {
+                ...state,
+                bin: state.bin.filter(note => new Date(note.createdAt) >= sevenDaysAgo)
+            };
         
             
         
