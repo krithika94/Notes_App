@@ -4,6 +4,7 @@ import Sidebar from '../../components/Sidebar'
 import {useNotesState} from '../../context/notes-context'
 import { NotesCard } from '../../components/NotesCard'
 import { NotesForm } from '../../components/NotesForm'
+import { Footer } from '../../components/Footer'
 
 const Home = () => {
   
@@ -14,6 +15,7 @@ const Home = () => {
 
   return (
     <>
+      <div className='min-h-screen'>
         <Navbar/>
         <main className='flex gap-3 '>
 
@@ -21,15 +23,17 @@ const Home = () => {
             <section>
               <NotesForm currentPage="home"/>
               <section className='mt-4'>
+                <h2>Pinned Notes</h2>
                 <div className='flex flex-wrap gap-3 mt-4'>
-                  <h2>Pinned Notes</h2>
+                  
                   {pinnedNotes.length>0 && pinnedNotes.map((note)=>{
                     return <NotesCard key={note.id} note={note} />;
                   })}
                   
                 </div>
+                {otherNotes?.length>0 && <h2 className='mt-4'>otherNotes</h2>}
                 <div className='flex flex-wrap gap-3 mt-4'>
-                  {otherNotes?.length>0 && <h2>otherNotes</h2>}
+                  
                   {otherNotes.length>0 && otherNotes.map((note)=>{
                     return <NotesCard key={note.id} note={note} />;
                   })}
@@ -40,6 +44,8 @@ const Home = () => {
             </section>
            
         </main>
+        <Footer/>
+      </div>
     </>
   )
 }

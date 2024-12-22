@@ -1,3 +1,4 @@
+import { Footer } from "../../components/Footer"
 import Navbar from "../../components/Navbar"
 import { NotesCard } from "../../components/NotesCard"
 import Sidebar from "../../components/Sidebar"
@@ -20,6 +21,7 @@ export const Bin = () => {
                 </div>
             </section>
         </main>
+        <Footer/>
     </>
   )
 }

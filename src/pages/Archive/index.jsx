@@ -2,6 +2,7 @@ import Navbar from "../../components/Navbar"
 import Sidebar from "../../components/Sidebar"
 import { useNotesState } from "../../context/notes-context"
 import {NotesCard} from '../../components/NotesCard/index'
+import { Footer } from "../../components/Footer"
 export const Archive = () => {
    const{archive} = useNotesState();
   return (
@@ -19,6 +20,7 @@ export const Archive = () => {
         
         
     </main>
+    <Footer/>
 
     </>
   )
