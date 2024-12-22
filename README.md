@@ -21,7 +21,7 @@ NotesApp is a simple and powerful tool to help you stay organized and productive
 
 ## Live Link
 
-https://notes-app.netlify.app/
+https://notes-app-2024.netlify.app/
 
 
 ## Run Locally
